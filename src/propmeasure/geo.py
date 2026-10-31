@@ -20,7 +20,7 @@ FT_PER_M = 3.280839895
 
 
 def ground_resolution(lat: float, zoom: int) -> float:
-    """Metres on the ground per pixel at this latitude and zoom."""
+    """Meters on the ground per pixel at this latitude and zoom."""
     return math.cos(math.radians(lat)) * 2 * math.pi * EARTH_RADIUS_M / (TILE_PX * 2**zoom)
 
 
@@ -54,7 +54,7 @@ def capture_px_to_ring(pts: np.ndarray, origin_x: float, origin_y: float, zoom: 
 
 
 def rasterize(poly_xy: np.ndarray, shape: tuple[int, int]) -> np.ndarray:
-    """Boolean mask of the pixels whose centres fall inside the polygon.
+    """Boolean mask of the pixels whose centers fall inside the polygon.
 
     Polygon coordinates are continuous pixel coordinates, with pixel (r, c) covering [c, c+1) x [r, r+1).
     """
@@ -81,7 +81,7 @@ def outline_polygons(mask: np.ndarray, tolerance_px: float = 0.9) -> list[np.nda
         if len(contour) < 8:
             continue
         simple = approximate_polygon(contour, tolerance=tolerance_px)
-        # find_contours runs through pixel centres (offset by the pad); move to pixel-edge coordinates
+        # find_contours runs through pixel centers (offset by the pad); move to pixel-edge coordinates
         polys.append(np.column_stack([simple[:, 1] - 0.5, simple[:, 0] - 0.5]))
     return polys
 
@@ -92,5 +92,5 @@ def polygon_perimeter(poly_xy: np.ndarray) -> float:
 
 
 def simplified_perimeter_px(mask: np.ndarray, tolerance_px: float = 0.9) -> float:
-    """Perimeter of the vectorised, simplified outline: what a crew would measure along the eaves."""
+    """Perimeter of the vectorized, simplified outline: what a crew would measure along the eaves."""
     return sum(polygon_perimeter(p) for p in outline_polygons(mask, tolerance_px))

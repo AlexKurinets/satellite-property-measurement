@@ -1,4 +1,4 @@
-"""Measurements, estimator corrections, the labelling queue and status, shared by the API and the CLI."""
+"""Measurements, estimator corrections, the labeling queue and status, shared by the API and the CLI."""
 
 from __future__ import annotations
 
@@ -71,7 +71,7 @@ def add_correction(conn, measurement_id: int, feature: str, corrected_value: flo
 
 
 def label_queue(conn, limit: int = 20) -> list[dict]:
-    """Unlabelled properties whose measurements estimators corrected the most, taken in turn from each market.
+    """Unlabeled properties whose measurements estimators corrected the most, taken in turn from each market.
 
     These go to the annotators for the next fine-tune round: they are where the current model is wrong, and taking
     them market by market keeps one market's problems from filling the whole batch.

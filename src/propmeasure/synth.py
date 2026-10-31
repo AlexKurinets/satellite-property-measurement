@@ -1,6 +1,6 @@
 """Synthetic residential properties: satellite-style imagery, label masks, parcels and measured truth.
 
-Each scene is laid out in metres with the street along the bottom edge (production rotated every capture so the
+Each scene is laid out in meters with the street along the bottom edge (production rotated every capture so the
 parcel's frontage faces down), drawn on a grid four times finer than the imagery, then averaged down so boundary
 pixels are mixtures the way real 30 cm pixels are. Truth areas come from the fine grid, which stands in for the
 hand tracing on sharper imagery that production's benchmark used.
@@ -46,7 +46,7 @@ BASE_RGB = np.array([
     (166, 162, 152),  # gravel
     (186, 184, 178),  # concrete
     (80, 80, 84),  # asphalt
-    (0, 0, 0),  # roof, coloured per house
+    (0, 0, 0),  # roof, colored per house
     (70, 148, 182),  # pool
 ], dtype=np.float32)
 # texture amplitudes per material: fine grain, medium, coarse blotches, speckle
@@ -101,7 +101,7 @@ class Scene:
     season: str
     captured_on: date
     truth: dict = field(default_factory=dict)
-    layout: dict = field(default_factory=dict)  # street geometry in metres, for tests
+    layout: dict = field(default_factory=dict)  # street geometry in meters, for tests
 
     @property
     def gsd(self) -> float:
@@ -189,7 +189,7 @@ class _House:
 
 
 def _house_parts(h: _House):
-    """(cx, cy, hw, hh, ridge_along_u) for the main body and the optional garage wing, in world metres."""
+    """(cx, cy, hw, hh, ridge_along_u) for the main body and the optional garage wing, in world meters."""
     parts = [(h.cx, h.cy, h.hw, h.hh, h.hw >= h.hh, h.hip)]
     if h.wing:
         side, gw, p = h.wing
@@ -369,7 +369,7 @@ def make_scene(seed: int, domain: str = "target", market: str | None = None) -> 
     px0, px1, py0 = xc - w / 2, xc + w / 2, y_lot - d
     left = min(px0 - rng.uniform(14, 20), -1.0)
     right = max(px1 + rng.uniform(14, 20), cm + 1.0)
-    # target, two side neighbours at least as deep, and the rear neighbour facing the next street
+    # target, two side neighbors at least as deep, and the rear neighbor facing the next street
     parcels = [(px0, px1, py0, y_lot, True), (left, px0, py0 - rng.uniform(0, 3), y_lot, True),
                (px1, right, py0 - rng.uniform(0, 3), y_lot, True),
                (-5.0, cm + 5.0, py0 - rng.uniform(18, 26), py0, False)]

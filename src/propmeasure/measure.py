@@ -69,8 +69,8 @@ class Measurement:
 
 def _frontage_columns(poly: np.ndarray, width: int) -> np.ndarray:
     x_lo, x_hi = poly[:, 0].min(), poly[:, 0].max()
-    centres = np.arange(width) + 0.5
-    return np.nonzero((centres >= x_lo) & (centres < x_hi))[0]
+    centers = np.arange(width) + 0.5
+    return np.nonzero((centers >= x_lo) & (centers < x_hi))[0]
 
 
 def find_street(classes: np.ndarray, poly: np.ndarray, gsd: float) -> dict:

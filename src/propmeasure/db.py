@@ -83,7 +83,7 @@ def training_arrays(conn, split: str) -> tuple[np.ndarray, np.ndarray]:
         "SELECT c.png, l.mask_png FROM pm.properties p JOIN pm.captures c USING (property_id) "
         "JOIN pm.labels l USING (property_id) WHERE p.split = %s ORDER BY p.property_id", (split,)).fetchall()
     if not rows:
-        raise RuntimeError(f"no labelled properties in split {split!r}; run `propmeasure seed` first")
+        raise RuntimeError(f"no labeled properties in split {split!r}; run `propmeasure seed` first")
     return np.stack([png_array(r["png"]) for r in rows]), np.stack([png_array(r["mask_png"]) for r in rows])
 
 

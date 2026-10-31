@@ -56,7 +56,7 @@ def test_front_line_snaps_to_back_of_sidewalk(scenes):
             continue
         m = measure(_inp(sc), sc.label, pipeline="v2", measured_on=DAY)
         delivered_off_m = (sc.parcel_delivered[:, 1].max() - sc.parcel_true[:, 1].max()) * sc.gsd
-        # the lot line sits 0 to 0.3 m behind the sidewalk, and pixels are about a quarter metre
+        # the lot line sits 0 to 0.3 m behind the sidewalk, and pixels are about a quarter meter
         assert m.values["parcel_shift_m"] + delivered_off_m == pytest.approx(0.15, abs=0.5)
         snapped += 1
     assert snapped >= 10
@@ -76,7 +76,7 @@ def test_oracle_v2_beats_v1_on_lawn_and_roof(scenes):
     assert np.median(errs["v1"]["roof_sqft"]) < -0.05
 
 
-def test_roof_selection_takes_the_whole_house_and_no_neighbours(scenes):
+def test_roof_selection_takes_the_whole_house_and_no_neighbors(scenes):
     for sc in scenes:
         m = measure(_inp(sc), sc.label, pipeline="v2", measured_on=DAY)
         assert _err(m, sc, "roof_plan_sqft") == pytest.approx(0, abs=0.12)

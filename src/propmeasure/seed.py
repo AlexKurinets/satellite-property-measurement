@@ -1,10 +1,10 @@
-"""Seed synthetic properties: base-domain training data, the client's labelled sets, and live properties.
+"""Seed synthetic properties: base-domain training data, the client's labeled sets, and live properties.
 
 Splits:
-- base: public land-cover look, labelled with the base classes; trains the original model.
+- base: public land-cover look, labeled with the base classes; trains the original model.
 - train / val: client markets, traced with the client classes; the fine-tune set and its checkpoint selection.
 - test: the held-out benchmark, traced, never trained on.
-- live: unlabelled properties the API measures and the simulated estimators correct.
+- live: unlabeled properties the API measures and the simulated estimators correct.
 """
 
 from __future__ import annotations

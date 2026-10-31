@@ -28,7 +28,7 @@ def test_capture_ring_round_trip():
     assert np.allclose(back, pts, atol=1e-6)
 
 
-def test_rasterize_counts_pixel_centres():
+def test_rasterize_counts_pixel_centers():
     poly = np.array([(10, 20), (30, 20), (30, 30), (10, 30)], dtype=float)
     assert geo.rasterize(poly, (64, 64)).sum() == 200
 

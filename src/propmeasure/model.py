@@ -1,7 +1,7 @@
 """U-Net segmentation model and the head swap used for fine-tuning.
 
 A U-Net decodes back to full resolution through skip connections. At 30 cm a model that predicts at a quarter of the
-input resolution and upsamples smears every boundary over about a metre, and on a 4,000 sq ft lawn a one-pixel
+input resolution and upsamples smears every boundary over about a meter, and on a 4,000 sq ft lawn a one-pixel
 boundary error is already about 6% of the area, so full-resolution output matters more here than a bigger encoder.
 Production used an ImageNet-pretrained ResNet-34 encoder; this repo uses the same layout at a width that trains on a
 CPU in minutes.
@@ -58,7 +58,7 @@ class UNet(nn.Module):
 
 
 def normalize(images_uint8: torch.Tensor) -> torch.Tensor:
-    """(B, H, W, 3) uint8 to normalised (B, 3, H, W) float."""
+    """(B, H, W, 3) uint8 to normalized (B, 3, H, W) float."""
     x = images_uint8.permute(0, 3, 1, 2).float()
     return (x - IMAGE_MEAN) / IMAGE_STD
 
