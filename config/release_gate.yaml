@@ -1,0 +1,8 @@
+# Release gate for a candidate (model, pipeline) pair on the traced benchmark.
+# A candidate is promoted only if every check passes against the current production pair.
+gated_features: [lawn_sqft, roof_sqft]
+max_mdape:            # median absolute area error, percent
+  lawn_sqft: 8
+  roof_sqft: 6
+max_abs_bias: 3       # median signed error, percent: a market-wide lean makes every quote run high or low
+max_market_regression: 2   # no market may get worse than production by more than this many points

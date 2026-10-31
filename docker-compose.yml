@@ -1,0 +1,48 @@
+name: propmeasure
+
+x-app: &app
+  image: propmeasure:local
+  build: .
+  environment:
+    DATABASE_URL: postgresql://propmeasure:propmeasure@db:5432/propmeasure
+    PROPMEASURE_API_TOKEN: ${PROPMEASURE_API_TOKEN:-local-dev-token}
+    PROPMEASURE_BASE_STEPS: ${PROPMEASURE_BASE_STEPS:-1500}
+    PROPMEASURE_FT_STEPS: ${PROPMEASURE_FT_STEPS:-1000}
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: propmeasure
+      POSTGRES_PASSWORD: propmeasure
+      POSTGRES_DB: propmeasure
+    ports: ["${POSTGRES_PORT:-5512}:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U propmeasure"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  # one-shot: seed, train the base model, fine-tune, benchmark, gate, promote, simulate a live month.
+  # Re-running it skips every step that is already done.
+  trainer:
+    <<: *app
+    command: ["propmeasure", "bootstrap"]
+    depends_on:
+      db: {condition: service_healthy}
+    restart: "no"
+
+  api:
+    <<: *app
+    ports: ["${API_PORT:-8190}:8000"]
+    depends_on:
+      trainer: {condition: service_completed_successfully}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  pgdata:
