@@ -9,6 +9,7 @@ Splits:
 
 from __future__ import annotations
 
+import multiprocessing
 import os
 from concurrent.futures import ProcessPoolExecutor
 
@@ -66,7 +67,9 @@ def seed(conn, sizes: dict[str, int] | None = None, workers: int | None = None, 
     workers = workers or min(8, os.cpu_count() or 2)
     log(f"seed: generating {len(jobs)} properties on {workers} processes")
     done = 0
-    with ProcessPoolExecutor(workers) as ex:
+    # spawn, not fork: a worker forked from a process that has already run torch inherits its thread pool and can
+    # hang the first time it calls torch (the generator does, to upsample noise)
+    with ProcessPoolExecutor(workers, mp_context=multiprocessing.get_context("spawn")) as ex:
         batch = []
         for job, sc in ex.map(_make, jobs, chunksize=4):
             batch.append(_rows(job, sc))
